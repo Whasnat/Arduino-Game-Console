@@ -1,6 +1,7 @@
 #include <LiquidCrystal.h>	
 // LiquidCrystal display
 
+//################## Declaring Connections ##################
 LiquidCrystal lcd(2, 3, 4, 5, 6, 7, 8); // define display pins
 
 const int choiceBtn_1 = 12;  	//Serial.read(); //user choice
@@ -23,6 +24,12 @@ const int MAXSTEPDURATION = 300; // Start slowly, each step is 1 millisec shorte
 const int MINSTEPDURATION = 150; // This is as fast as it gets
 
 const int NGLYPHS = 6;
+
+
+// ############# Character Design ######################## 
+
+// FOR TRUCKS AHEAD
+
 // the glyphs will be defined starting from 1 (not 0),
 // to enable lcd.print() of null-terminated strings
 byte glyphs[NGLYPHS][8] = {
@@ -82,6 +89,38 @@ byte glyphs[NGLYPHS][8] = {
     B00000}
 };
 
+
+// Declarations for Dino Jump
+
+//bitmap array for the dino character
+byte dino [8]
+{ B00000,
+  B00111,
+  B00101,
+  B10111,
+  B11100,
+  B11111,
+  B01101,
+  B01100,
+};
+
+//character for the tree
+byte tree [8]
+{
+  B00011,
+  B11011,
+  B11011,
+  B11011,
+  B11011,
+  B11111,
+  B01110,
+  B01110
+};
+
+
+
+
+
 const int NCARPOSITIONS = 4;
 
 // Each position is mapped to a column of 2 glyphs
@@ -89,6 +128,7 @@ const int NCARPOSITIONS = 4;
 // where car or crash was drawn as 2 glyphs
 // (can't do that since 0 terminates strings),
 // so it's kinda silly now, but it ain't broke :)
+
 const char BLANK=32;
 char car2glyphs[NCARPOSITIONS][2] = {
   {1,BLANK},{2,BLANK},{BLANK,1},{BLANK,2}
@@ -120,32 +160,8 @@ const char *INTRO2="Drive carefully";
 const int INTRODELAY = 2000;
 
 
-// Declarations for Dino Jump
-//bitmap array for the dino character
-byte dino [8]
-{ B00000,
-  B00111,
-  B00101,
-  B10111,
-  B11100,
-  B11111,
-  B01101,
-  B01100,
-};
 
-//character for the tree
-byte tree [8]
-{
-  B00011,
-  B11011,
-  B11011,
-  B11011,
-  B11011,
-  B11111,
-  B01110,
-  B01110
-};
-
+int choice = choice.input; // user Choice
 
 const int MENU_SIZE = 2;
 const int LCD_COLUMN = 16;
@@ -166,7 +182,7 @@ String scoreList[20];
 
 
 
-int choice = 1; // user Choice
+
 
 void setup(){
   
@@ -187,7 +203,6 @@ void setup(){
 
 void loop() {
 
-  
   
   // Load Loops according to game
   if (choice == 1){
@@ -273,9 +288,6 @@ void truckRacer(){
 
 
 
-
-
-
 void getSteeringWheel() {
   car_pos = map(analogRead(POTPIN),0,1024,0,NCARPOSITIONS);
 }
@@ -309,6 +321,7 @@ void dinoJump(){
   pinMode(BUTTON_ENTER, INPUT_PULLUP);
   pinMode(BUTTON_SELECT, INPUT_PULLUP);
 }
+
 
 void handleMenu() {
   String menu[MENU_SIZE] = { "START", "SCORE" };
@@ -506,7 +519,6 @@ void putDinoOnGround () {
 
   isDinoOnGround = true;
 }
-
 
 
 void putDinoOnAir () {
